@@ -1,0 +1,347 @@
+/*======================================
+Theme Name: Free Divi Child Theme By Pee-Aye Creative
+Theme URI: https://www.peeayecreative.com/
+Description: This is a free Divi child theme from Pee-Aye Creative!
+Author: Nelson Lee Miller (aka The Divi Teacher)
+Author URI: https://www.peeayecreative.com/
+Author Email: nelson@peeayecreative.com
+Template: Divi
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+======================================*/
+
+ /* ===== NOTES ==================================================================
+ * 
+ * New to Divi? Take our full Divi course: https://www.peeayecreative.com/product/beyond-the-builder-the-ultimate-divi-website-course/
+ * 
+ * Learn cool tricks and features with our Divi tutorials: https://www.peeayecreative.com/blog/
+ * 
+ * Discover our premium Divi products: https://www.peeayecreative.com/shop/
+ * 
+ * =============================================================================== */
+
+/*add your custom CSS below this line*/
+
+
+/* Islamic Heritage Header - Improved Design */
+
+/* Top header bar styling */
+#top-header {
+    background: linear-gradient(135deg, #0D4720 0%, #1B5E20 100%) !important;
+    color: #FFF8E1 !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px solid rgba(255, 179, 0, 0.2) !important;
+}
+
+#top-header .container {
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+#top-header a {
+    color: #FFF8E1 !important;
+    transition: color 0.3s ease !important;
+    text-decoration: none !important;
+}
+
+#top-header a:hover {
+    color: #FFB300 !important;
+}
+
+/* Social icons styling */
+#top-header .et-social-icons a {
+    color: #FFF8E1 !important;
+    font-size: 16px !important;
+    margin: 0 5px !important;
+    transition: all 0.3s ease !important;
+}
+
+#top-header .et-social-icons a:hover {
+    color: #FFB300 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Main header with sophisticated gradient */
+#main-header,
+.et-fixed-header #main-header {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 50%, #FFFFFF 100%) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
+    border-bottom: 3px solid #FFB300 !important;
+}
+
+/* Subtle Islamic geometric pattern overlay */
+#main-header::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(27, 94, 32, 0.02) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(255, 179, 0, 0.03) 2px, transparent 2px) !important;
+    background-size: 60px 60px, 80px 80px !important;
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+/* Ensure content stays above pattern */
+#main-header .container {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Logo styling enhancement */
+#main-header .logo_container {
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+#main-header #logo {
+    max-height: 60px !important;
+    transition: all 0.3s ease !important;
+}
+
+#main-header #logo:hover {
+    transform: scale(1.05) !important;
+}
+
+/* Navigation menu styling */
+#top-menu {
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+#top-menu li a {
+    color: #1B5E20 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease !important;
+    padding: 12px 16px !important;
+    position: relative !important;
+    text-transform: capitalize !important;
+}
+
+/* Hover effect with underline animation */
+#top-menu li a::after {
+    content: "" !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 3px !important;
+    background: #FFB300 !important;
+    transition: all 0.3s ease !important;
+    transform: translateX(-50%) !important;
+}
+
+#top-menu li a:hover {
+    color: #FFB300 !important;
+    transform: translateY(-2px) !important;
+}
+
+#top-menu li a:hover::after {
+    width: 80% !important;
+}
+
+/* Active menu item */
+#top-menu li.current-menu-item a,
+#top-menu li.current_page_item a {
+    color: #FFB300 !important;
+}
+
+#top-menu li.current-menu-item a::after,
+#top-menu li.current_page_item a::after {
+    width: 80% !important;
+}
+
+/* CTA Button styling */
+.header-cta-button,
+#top-menu .cta-button a {
+    background: linear-gradient(135deg, #FFB300 0%, #FF8F00 100%) !important;
+    color: #1B5E20 !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.3) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    margin-left: 15px !important;
+}
+
+.header-cta-button:hover,
+#top-menu .cta-button a:hover {
+    background: linear-gradient(135deg, #FF8F00 0%, #F57C00 100%) !important;
+    color: #1B5E20 !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 25px rgba(255, 179, 0, 0.4) !important;
+}
+
+/* Mobile menu styling */
+.et_mobile_nav_menu {
+    background: #FFFFFF !important;
+    border-top: 3px solid #FFB300 !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.et_mobile_nav_menu .mobile_nav {
+    background: linear-gradient(135deg, #FFB300 0%, #FF8F00 100%) !important;
+    color: #1B5E20 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.et_mobile_nav_menu .mobile_nav:hover {
+    background: linear-gradient(135deg, #FF8F00 0%, #F57C00 100%) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Mobile menu items */
+.et_mobile_nav_menu .mobile_menu_bar {
+    background: #FFFFFF !important;
+}
+
+.et_mobile_nav_menu .mobile_menu_bar a {
+    color: #1B5E20 !important;
+    font-weight: 500 !important;
+    padding: 15px 20px !important;
+    border-bottom: 1px solid #F0F0F0 !important;
+    transition: all 0.3s ease !important;
+}
+
+.et_mobile_nav_menu .mobile_menu_bar a:hover {
+    color: #FFB300 !important;
+    background: #F8F9FA !important;
+    padding-left: 25px !important;
+}
+
+/* Fixed header adjustments */
+.et-fixed-header #main-header {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-bottom: 2px solid #FFB300 !important;
+}
+
+.et-fixed-header #main-header::after {
+    opacity: 0.3 !important;
+}
+
+/* Search form styling */
+.et_search_form_container {
+    background: #FFFFFF !important;
+    border: 2px solid #FFB300 !important;
+    border-radius: 25px !important;
+}
+
+.et_search_form_container input {
+    background: transparent !important;
+    border: none !important;
+    color: #1B5E20 !important;
+}
+
+.et_search_form_container .et_search_form_submit {
+    background: #FFB300 !important;
+    color: #1B5E20 !important;
+    border-radius: 50% !important;
+}
+
+/* Responsive Design */
+@media (max-width: 980px) {
+    #top-header {
+        text-align: center !important;
+        padding: 6px 0 !important;
+    }
+    
+    #main-header #logo {
+        max-height: 50px !important;
+    }
+    
+    .header-cta-button {
+        margin-left: 10px !important;
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #top-header {
+        padding: 5px 0 !important;
+        font-size: 14px !important;
+    }
+    
+    #top-header .et-social-icons a {
+        font-size: 14px !important;
+        margin: 0 3px !important;
+    }
+    
+    #main-header {
+        padding: 10px 0 !important;
+    }
+    
+    #main-header #logo {
+        max-height: 45px !important;
+    }
+    
+    .header-cta-button {
+        padding: 8px 16px !important;
+        font-size: 12px !important;
+        margin-left: 8px !important;
+    }
+    
+    #main-header::after {
+        background-size: 40px 40px, 60px 60px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #top-header {
+        padding: 4px 0 !important;
+        font-size: 12px !important;
+    }
+    
+    #main-header {
+        padding: 8px 0 !important;
+    }
+    
+    #main-header #logo {
+        max-height: 40px !important;
+    }
+    
+    .header-cta-button {
+        padding: 6px 12px !important;
+        font-size: 11px !important;
+        margin-left: 5px !important;
+    }
+    
+    .et_mobile_nav_menu .mobile_nav {
+        padding: 6px 10px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Additional enhancement: Breadcrumb styling if present */
+.et_pb_breadcrumbs {
+    background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%) !important;
+    padding: 15px 0 !important;
+    border-bottom: 1px solid #E0E0E0 !important;
+}
+
+.et_pb_breadcrumbs a {
+    color: #1B5E20 !important;
+    transition: color 0.3s ease !important;
+}
+
+.et_pb_breadcrumbs a:hover {
+    color: #FFB300 !important;
+}
