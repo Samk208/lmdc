@@ -145,14 +145,16 @@
     margin-bottom: 0.75rem;
 }
 
-.lnmc-hero__title {
-    font-family: "Cormorant Garamond", "Amiri", Georgia, serif;
-    font-size: clamp(2.1rem, 4.2vw, 3.6rem);
-    line-height: 1.15;
-    font-weight: 700;
-    color: #FFF8E1;
-    margin: 0 0 1rem;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+.lnmc-hero h1.lnmc-hero__title,
+.lnmc-hero h2.lnmc-hero__title,
+.lnmc-hero .lnmc-hero__title {
+    font-family: "Cormorant Garamond", "Amiri", Georgia, serif !important;
+    font-size: clamp(2.1rem, 4.2vw, 3.6rem) !important;
+    line-height: 1.15 !important;
+    font-weight: 700 !important;
+    color: #FFF8E1 !important;
+    margin: 0 0 1rem !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7) !important;
 }
 
 .lnmc-hero__desc {
