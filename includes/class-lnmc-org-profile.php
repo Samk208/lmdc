@@ -83,6 +83,7 @@ class LNMC_Org_Profile
     {
         if (
             ! is_singular('organization')
+            || post_password_required()
             || ! in_the_loop()
             || ! is_main_query()
             || doing_filter('et_builder_render_layout')
