@@ -148,7 +148,8 @@
     widget.appendChild(header);
     widget.appendChild(body);
     widget.appendChild(inputArea);
-    widget.appendChild(launcher);
+    // NOTE: launcher is NOT appended to widget - it lives at body level so the
+    // widget's closed-state transform/opacity cannot cascade down and hide it.
     widget.appendChild(disclosure);
     return {
       widget: widget,
@@ -176,6 +177,9 @@
   function init() {
     var parts = buildWidget();
     document.body.appendChild(parts.widget);
+    // Launcher is a sibling of the widget (not a child) so the closed-widget
+    // transform/opacity/pointer-events cannot cascade down and hide it.
+    document.body.appendChild(parts.launcher);
 
     var widget = parts.widget;
     var body = parts.body;

@@ -1,0 +1,189 @@
+/* ==========================================================================
+   Sister-organization contact panel
+   Appended to every organization page by includes/class-lnmc-org-profile.php.
+   Palette follows the directory hub tokens in the community-partners plugin
+   (green #1B5E20 / gold #FFB300) so the panel reads as part of the directory
+   rather than as generic theme furniture.
+   ========================================================================== */
+
+.lnmc-org-contact {
+  --lnmc-org-green: #1b5e20;
+  --lnmc-org-green-soft: #eaf4ec;
+  --lnmc-org-gold: #ffb300;
+  --lnmc-org-ink: #1e2a21;
+  --lnmc-org-muted: #5e6b62;
+
+  margin: clamp(2rem, 5vw, 3.5rem) auto 0;
+  width: min(1120px, calc(100% - 32px));
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: #ffffff;
+  border: 1px solid rgba(27, 94, 32, 0.14);
+  border-top: 4px solid var(--lnmc-org-gold);
+  border-radius: 14px;
+  box-shadow: 0 20px 45px -32px rgba(27, 94, 32, 0.55);
+  color: var(--lnmc-org-ink);
+  font-family:
+    "Space Grotesk",
+    "Poppins",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+
+.lnmc-org-contact__title {
+  margin: 0 0 1.25rem;
+  color: var(--lnmc-org-green);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  line-height: 1.2;
+}
+
+/* Links ------------------------------------------------------------------ */
+
+.lnmc-org-contact__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lnmc-org-contact__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  list-style: none;
+  background: var(--lnmc-org-green-soft);
+  border-radius: 10px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.lnmc-org-contact__item:hover,
+.lnmc-org-contact__item:focus-within {
+  background: #dff0e3;
+  transform: translateY(-1px);
+}
+
+/* The child theme caps prose <li> at 65ch inside #main-content. These items
+   are layout boxes, so re-open the width with an ID-scoped selector —
+   anything less specific silently loses and the grid collapses to one column.
+   min-width lets a nowrap URL be clipped by text-overflow instead of widening
+   the grid track past the panel. */
+#main-content .lnmc-org-contact .lnmc-org-contact__item {
+  max-width: none;
+  min-width: 0;
+}
+
+.lnmc-org-contact__icon {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+.lnmc-org-contact__link {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--lnmc-org-green);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.lnmc-org-contact__link:hover,
+.lnmc-org-contact__link:focus {
+  color: var(--lnmc-org-green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lnmc-org-contact__label {
+  color: var(--lnmc-org-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.lnmc-org-contact__value {
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.45;
+  /* Handles such as facebook.com/nationalmuslimcouncillofliberia are single
+     long tokens. Wrapping them breaks mid-word, so clip to one line instead;
+     the link itself still carries the full URL. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Facts ------------------------------------------------------------------ */
+
+.lnmc-org-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 1.5rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid rgba(27, 94, 32, 0.12);
+}
+
+.lnmc-org-facts__row {
+  margin: 0;
+}
+
+.lnmc-org-facts__term {
+  margin: 0 0 0.15rem;
+  color: var(--lnmc-org-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.lnmc-org-facts__value {
+  margin: 0;
+  color: var(--lnmc-org-ink);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* Note ------------------------------------------------------------------- */
+
+.lnmc-org-contact__note {
+  margin: 1.5rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(27, 94, 32, 0.12);
+  color: var(--lnmc-org-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .lnmc-org-contact {
+    width: calc(100% - 24px);
+    padding: 1.25rem;
+  }
+
+  .lnmc-org-contact__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lnmc-org-contact__item {
+    transition: none;
+  }
+
+  .lnmc-org-contact__item:hover,
+  .lnmc-org-contact__item:focus-within {
+    transform: none;
+  }
+}

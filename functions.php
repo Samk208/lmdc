@@ -19,6 +19,18 @@
  */
 require_once get_stylesheet_directory() . '/includes/class-lnmc-ai-chat.php';
 
+/**
+ * LNMC event galleries — [lnmc_gallery event="…"] shortcode.
+ * Photography is tagged in the media library, so albums are data not markup.
+ */
+require_once get_stylesheet_directory() . '/includes/class-lnmc-gallery.php';
+
+/**
+ * Sister-organization contact panel — prints the website, email and social
+ * links the community-partners plugin stores but never renders.
+ */
+require_once get_stylesheet_directory() . '/includes/class-lnmc-org-profile.php';
+
 function divichild_enqueue_scripts()
 {
     // Brand fonts: Amiri (headings) + Source Sans 3 (body) per client brief.

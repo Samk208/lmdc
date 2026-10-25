@@ -734,14 +734,32 @@ body.home .et_pb_section_5 .et_pb_text_3 p {
     font-weight: 600;
 }
 
-/* Fix 3: Footer Heading Color (moved from JS) */
-.et-l--footer h5,
+/* Fix 3: Footer Heading Color — split by template (contrast-safe) */
+/* Divi Theme Builder footer renders on cream/light bg → use dark green for AA contrast */
 .et-l--footer h4,
+.et-l--footer h5,
+.et-l--footer h6 {
+  color: var(--lnmc-green-dark) !important;
+}
+/* Legacy Divi default footer renders on dark green gradient → keep white */
 footer h5,
 footer h4,
 #main-footer h5,
 #main-footer h4 {
-    color: #ffffff !important;
+  color: #ffffff !important;
+}
+/* Theme Builder sections with explicit dark bg keep white headings */
+.et-l--footer .et_pb_section[style*="#0E3D12"] h4,
+.et-l--footer .et_pb_section[style*="#0E3D12"] h5,
+.et-l--footer .et_pb_section[style*="#0E3D12"] h6,
+.et-l--footer .et_pb_section[style*="#1B5E20"] h4,
+.et-l--footer .et_pb_section[style*="#1B5E20"] h5,
+.et-l--footer .et_pb_section[style*="#1B5E20"] h6,
+.et-l--footer .et_pb_section[style*="rgb(14, 61, 18)"] h4,
+.et-l--footer .et_pb_section[style*="rgb(14, 61, 18)"] h5,
+.et-l--footer .et_pb_section[style*="rgb(27, 94, 32)"] h4,
+.et-l--footer .et_pb_section[style*="rgb(27, 94, 32)"] h5 {
+  color: #ffffff !important;
 }
 
 /* Fix 4: Search Button Accessibility */
@@ -756,11 +774,25 @@ footer h4,
     background-color: var(--lnmc-gold-dark) !important;
 }
 
-/* Fix 5: Extended Footer Text Styling (moved from JavaScript runtime patching) */
+/* Fix 5: Footer Text Styling — contrast-safe by template */
+/* Divi Theme Builder footer (cream/light bg) → readable dark text */
 .et-l--footer p,
 .et-l--footer span,
-.et-l--footer li,
-.et-l--footer a,
+.et-l--footer li {
+  color: var(--lnmc-neutral-900, #1a1a1a) !important;
+}
+.et-l--footer a {
+  color: var(--lnmc-green-dark) !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.et-l--footer a:hover,
+.et-l--footer a:focus {
+  color: var(--lnmc-gold-dark) !important;
+  text-decoration-thickness: 2px;
+}
+/* Legacy Divi default footer (dark green gradient bg) → white text */
 footer p,
 footer span,
 footer li,
@@ -769,13 +801,33 @@ footer a,
 #main-footer span,
 #main-footer li,
 #main-footer a {
-    color: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
 }
-
-.et-l--footer a:hover,
-footer a:hover,
-#main-footer a:hover {
-    color: var(--lnmc-gold) !important;
+#main-footer a:hover,
+footer a:hover {
+  color: var(--lnmc-gold) !important;
+}
+/* Theme Builder sections with explicit dark bg keep white text */
+.et-l--footer .et_pb_section[style*="#0E3D12"] p,
+.et-l--footer .et_pb_section[style*="#0E3D12"] span,
+.et-l--footer .et_pb_section[style*="#0E3D12"] li,
+.et-l--footer .et_pb_section[style*="#0E3D12"] a,
+.et-l--footer .et_pb_section[style*="#1B5E20"] p,
+.et-l--footer .et_pb_section[style*="#1B5E20"] span,
+.et-l--footer .et_pb_section[style*="#1B5E20"] li,
+.et-l--footer .et_pb_section[style*="#1B5E20"] a,
+.et-l--footer .et_pb_section[style*="rgb(14, 61, 18)"] p,
+.et-l--footer .et_pb_section[style*="rgb(14, 61, 18)"] a,
+.et-l--footer .et_pb_section[style*="rgb(27, 94, 32)"] p,
+.et-l--footer .et_pb_section[style*="rgb(27, 94, 32)"] a {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-decoration: none;
+}
+.et-l--footer .et_pb_section[style*="#0E3D12"] a:hover,
+.et-l--footer .et_pb_section[style*="#1B5E20"] a:hover,
+.et-l--footer .et_pb_section[style*="rgb(14, 61, 18)"] a:hover,
+.et-l--footer .et_pb_section[style*="rgb(27, 94, 32)"] a:hover {
+  color: var(--lnmc-gold) !important;
 }
 
 /* ========================================
@@ -2562,6 +2614,7 @@ body:not(.home) #main-content .et_pb_section h6 {
 /* Footer Theme Builder columns are tagged .lnmc-on-light by the runtime
    contrast helper because their own background is translucent. In the footer,
    translucent columns sit on dark green, so footer-specific contrast wins. */
+/* Commented out to allow standard dark text on light backgrounds inside the footer
 body #page-container #main-footer .lnmc-on-light,
 body #page-container #main-footer .lnmc-on-light p,
 body #page-container #main-footer .lnmc-on-light li,
@@ -2606,6 +2659,7 @@ body #page-container .et-l--footer .lnmc-on-light a:not(.et_pb_button),
 body #page-container .et-l--footer .lnmc-on-dark .lnmc-on-light a:not(.et_pb_button) {
     color: #FFF8E1 !important;
 }
+*/
 
 /* Newsletter/social footer band: the Divi module used #4CAF50, which is too
    light for white headings. Use dark green, then pin form/button colors. */
@@ -2614,7 +2668,7 @@ body #page-container .et-l--footer .et_pb_signup,
 body #page-container #main-footer .et_pb_column:has(.et_pb_signup),
 body #page-container .et-l--footer .et_pb_column:has(.et_pb_signup),
 body #page-container #main-footer .et_pb_column_4_tb_footer,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer {
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer {
     background-color: #0E3D12 !important;
 }
 body #page-container #main-footer .et_pb_column_4_tb_footer h1,
@@ -2625,14 +2679,14 @@ body #page-container #main-footer .et_pb_column_4_tb_footer h5,
 body #page-container #main-footer .et_pb_column_4_tb_footer h6,
 body #page-container #main-footer .et_pb_column_4_tb_footer p,
 body #page-container #main-footer .et_pb_column_4_tb_footer label,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer h1,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer h2,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer h3,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer h4,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer h5,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer h6,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer p,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer label,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h1,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h2,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h3,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h4,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h5,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h6,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer p,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer label,
 body #page-container #main-footer .et_pb_signup h1,
 body #page-container #main-footer .et_pb_signup h2,
 body #page-container #main-footer .et_pb_signup h3,
@@ -2662,9 +2716,9 @@ body #page-container #main-footer .et_pb_button,
 body #page-container .et-l--footer .et_pb_signup .et_pb_newsletter_button,
 body #page-container .et-l--footer .et_pb_signup .et_pb_newsletter_button_text,
 body #page-container .et-l--footer .et_pb_signup a.et_pb_button,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer .et_pb_newsletter_button,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer .et_pb_newsletter_button_text,
-body #page-container .et-l--footer .et_pb_column_4_tb_footer a.et_pb_button,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer .et_pb_newsletter_button,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer .et_pb_newsletter_button_text,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer a.et_pb_button,
 body #page-container .et-l--footer a.et_pb_button,
 body #page-container .et-l--footer .et_pb_button {
     color: #0E3D12 !important;
@@ -3828,3 +3882,123 @@ body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark strong,
 body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark b {
     color: var(--lnmc-green-dark) !important;
 }
+
+/* ==========================================================================
+   LNMC CUSTOM FOOTER UI & CONTRAST FIXES
+   ========================================================================== */
+
+/* --- Light Columns (1, 2, and 3: Quick Links, Chapters, Resources) --- */
+body #page-container .et-l--footer .et_pb_column_1_tb_footer,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer {
+    background-color: rgba(0, 0, 0, 0.03) !important; /* Soft backdrop for columns */
+    border-radius: var(--lnmc-radius-md, 14px) !important;
+    padding: 24px !important;
+}
+
+/* Headings in Light Columns */
+body #page-container .et-l--footer .et_pb_column_1_tb_footer h1,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer h2,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer h3,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer h4,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer h5,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer h6,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer h1,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer h2,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer h3,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer h4,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer h5,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer h6,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer h1,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer h2,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer h3,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer h4,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer h5,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer h6 {
+    color: var(--lnmc-green-dark, #0E3D12) !important;
+    font-weight: 700 !important;
+}
+
+/* Text & Links in Light Columns */
+body #page-container .et-l--footer .et_pb_column_1_tb_footer p,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer li,
+body #page-container .et-l--footer .et_pb_column_1_tb_footer span,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer p,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer li,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer span,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer p,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer li,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer span {
+    color: var(--lnmc-neutral-900, #2E2E2E) !important;
+}
+
+body #page-container .et-l--footer .et_pb_column_1_tb_footer a,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer a,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer a {
+    color: var(--lnmc-green, #1B5E20) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color 0.25s ease;
+}
+
+body #page-container .et-l--footer .et_pb_column_1_tb_footer a:hover,
+body #page-container .et-l--footer .et_pb_column_2_tb_footer a:hover,
+body #page-container .et-l--footer .et_pb_column_3_tb_footer a:hover {
+    color: var(--lnmc-gold-dark, #FF8F00) !important;
+    text-decoration: underline !important;
+}
+
+/* --- Dark Column (4: Stay Connected / Newsletter) --- */
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer {
+    background-color: var(--lnmc-green-dark, #0E3D12) !important;
+    border-radius: var(--lnmc-radius-lg, 20px) !important;
+    padding: 36px 32px !important;
+    box-shadow: var(--lnmc-shadow-soft);
+}
+
+/* Heading in Dark Column (Stay Connected) */
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h1,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h2,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h3,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h4,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h5,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer h6 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Text, Labels, and Links in Dark Column */
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer p,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer li,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer span,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer label {
+    color: var(--lnmc-cream, #F5F5DC) !important;
+}
+
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer a {
+    color: var(--lnmc-gold, #FFB300) !important;
+    text-decoration: none !important;
+    transition: color 0.25s ease;
+}
+
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer a:hover {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+}
+
+/* Newsletter Input field correction */
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer input.input,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer .et_pb_signup_fields input {
+    color: var(--lnmc-neutral-900, #2E2E2E) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid var(--lnmc-neutral-200, #E8E8E0) !important;
+    border-radius: var(--lnmc-radius-sm, 10px) !important;
+    padding: 12px 16px !important;
+    font-weight: 500 !important;
+}
+
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer input::placeholder,
+body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer .et_pb_signup_fields input::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+

@@ -424,10 +424,15 @@ if ( ! img.complete || img.naturalWidth === 0 ) {
 			// ancestor chain — we want to tag light cards independently.
 			var ownCs = window.getComputedStyle( el );
 			var ownBg = ownCs.backgroundColor;
+			var alpha = 1;
+			var m = ownBg ? ownBg.match( /rgba?\(.*,\s*([0-9.]+)\)/ ) : null;
+			if ( m ) {
+				alpha = parseFloat( m[1] );
+			}
 			var ownHasOpaque = ownBg
 				&& ownBg !== 'rgba(0, 0, 0, 0)'
 				&& ownBg !== 'transparent'
-				&& ! /,\s*0(\.0+)?\)/.test( ownBg ); // alpha 0 => skip
+				&& alpha >= 0.5;
 			if ( ownHasOpaque ) {
 				var ownLum = relativeLuminance( ownBg );
 				if ( ownLum < 0.30 ) {
