@@ -1,0 +1,202 @@
+/* ==========================================================================
+   Liberia reference pages (/liberia/…)
+   Loaded only on posts with _lnmc_entity meta (class-lnmc-entity-schema.php).
+   Fonts are inherited from the theme so these pages read like the rest of
+   the site. The one emphatic element is the Quick facts record; everything
+   else stays plain so the facts and sources carry the page.
+   ========================================================================== */
+
+.lnmc-entity-page {
+  --lnmc-ent-green: #1b5e20;
+  --lnmc-ent-gold: #ffb300;
+  --lnmc-ent-cream: #fff8e1;
+  --lnmc-ent-ink: #2e2e2e;
+  --lnmc-ent-muted: #4a4a4a;
+  --lnmc-ent-rule: rgba(27, 94, 32, 0.16);
+}
+
+/* Reading column ---------------------------------------------------------- */
+
+/* Divi sets #left-area { width: 100% !important } on full-width pages, so the
+   reading column is narrowed with max-width rather than fighting width. */
+body.lnmc-entity-page #main-content #left-area {
+  float: none;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 3.5rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.lnmc-entity-page #main-content .container::before {
+  display: none; /* Divi's sidebar divider line */
+}
+
+.lnmc-entity-page .entry-title.main_title {
+  margin-bottom: 1rem;
+  color: var(--lnmc-ent-green);
+  font-size: clamp(2rem, 5.2vw, 3rem);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.lnmc-entity-page .entry-content {
+  color: var(--lnmc-ent-ink);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.lnmc-entity-page .entry-content > p,
+.lnmc-entity-page .entry-content > ul,
+.lnmc-entity-page .entry-content > ol {
+  max-width: 68ch;
+}
+
+.lnmc-entity-page .entry-content h2 {
+  margin: 2.6rem 0 0.75rem;
+  padding: 0;
+  color: var(--lnmc-ent-green);
+  font-size: clamp(1.45rem, 3.4vw, 1.85rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.lnmc-entity-page .entry-content a {
+  color: var(--lnmc-ent-green);
+  text-decoration: underline;
+  text-decoration-color: rgba(27, 94, 32, 0.4);
+  text-underline-offset: 0.18em;
+  overflow-wrap: anywhere;
+}
+
+.lnmc-entity-page .entry-content a:hover {
+  text-decoration-color: currentColor;
+}
+
+.lnmc-entity-page .entry-content a:focus-visible {
+  outline: 2px solid var(--lnmc-ent-green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Lede ------------------------------------------------------------------- */
+
+.lnmc-entity-page .entry-content .lnmc-entity-lede {
+  margin: 0 0 1.75rem;
+  color: var(--lnmc-ent-ink);
+  font-size: clamp(1.15rem, 2.4vw, 1.3rem);
+  line-height: 1.65;
+}
+
+/* Quick facts record ----------------------------------------------------- */
+
+.lnmc-entity-page .lnmc-entity-facts {
+  margin: 0 0 2.25rem;
+  padding: clamp(1.15rem, 3.5vw, 1.75rem) clamp(1.15rem, 4vw, 2rem);
+  background: var(--lnmc-ent-cream);
+  border-left: 4px solid var(--lnmc-ent-gold);
+  border-radius: 0 10px 10px 0;
+}
+
+.lnmc-entity-page .entry-content .lnmc-entity-facts h2 {
+  margin: 0 0 0.85rem;
+  font-size: 1.3rem;
+}
+
+.lnmc-entity-page .lnmc-entity-facts dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+}
+
+.lnmc-entity-page .lnmc-entity-facts dt {
+  margin: 0.85rem 0 0.1rem;
+  color: var(--lnmc-ent-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.lnmc-entity-page .lnmc-entity-facts dt:first-child {
+  margin-top: 0;
+}
+
+.lnmc-entity-page .lnmc-entity-facts dd {
+  margin: 0;
+  color: var(--lnmc-ent-ink);
+  line-height: 1.55;
+}
+
+@media (min-width: 640px) {
+  .lnmc-entity-page .lnmc-entity-facts dl {
+    grid-template-columns: minmax(8.5rem, 30%) minmax(0, 1fr);
+    column-gap: 1.5rem;
+  }
+
+  .lnmc-entity-page .lnmc-entity-facts dt,
+  .lnmc-entity-page .lnmc-entity-facts dd {
+    margin: 0;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--lnmc-ent-rule);
+  }
+
+  .lnmc-entity-page .lnmc-entity-facts dt:first-of-type,
+  .lnmc-entity-page .lnmc-entity-facts dd:first-of-type {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+/* Lists, related pages and sources --------------------------------------- */
+
+.lnmc-entity-page .entry-content ul,
+.lnmc-entity-page .entry-content ol {
+  margin: 0.5rem 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+/* The child theme caps prose <li> at 65ch inside #main-content; the list
+   itself is already width-limited above, so let items use the column. */
+#main-content .lnmc-entity-page .entry-content li,
+.lnmc-entity-page #main-content .entry-content li {
+  max-width: none;
+  margin: 0 0 0.45rem;
+  padding: 0;
+}
+
+/* Sources: the only ordered list on a reference page. */
+.lnmc-entity-page .entry-content ol {
+  color: var(--lnmc-ent-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.lnmc-entity-page .entry-content .lnmc-entity-reviewed {
+  margin: 2.5rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--lnmc-ent-rule);
+  color: var(--lnmc-ent-muted);
+  font-size: 0.9rem;
+}
+
+/* Tables (none in batch 1, but hubs may grow them) ------------------------ */
+
+.lnmc-entity-page .entry-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.lnmc-entity-page .entry-content th,
+.lnmc-entity-page .entry-content td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--lnmc-ent-rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+@media (max-width: 480px) {
+  .lnmc-entity-page .entry-content {
+    font-size: 1rem;
+  }
+}

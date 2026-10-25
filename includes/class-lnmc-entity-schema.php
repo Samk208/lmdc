@@ -28,6 +28,40 @@ class LNMC_Entity_Schema
     public static function init(): void
     {
         add_action('wp_head', array(__CLASS__, 'render_schema'), 20);
+        add_action('wp_enqueue_scripts', array(__CLASS__, 'enqueue_assets'));
+        add_filter('body_class', array(__CLASS__, 'body_class'));
+    }
+
+    /**
+     * Reference pages are the only posts that carry _lnmc_entity, so the
+     * meta doubles as the "is this a reference page" switch for styling.
+     */
+    private static function is_entity_page(): bool
+    {
+        return is_singular() && '' !== (string) get_post_meta(get_queried_object_id(), '_lnmc_entity', true);
+    }
+
+    public static function enqueue_assets(): void
+    {
+        if (! self::is_entity_page()) {
+            return;
+        }
+
+        wp_enqueue_style(
+            'lnmc-entity',
+            get_stylesheet_directory_uri() . '/assets/css/lnmc-entity.css',
+            array('lnmc-child-style'),
+            filemtime(get_stylesheet_directory() . '/assets/css/lnmc-entity.css')
+        );
+    }
+
+    public static function body_class(array $classes): array
+    {
+        if (self::is_entity_page()) {
+            $classes[] = 'lnmc-entity-page';
+        }
+
+        return $classes;
     }
 
     /**
