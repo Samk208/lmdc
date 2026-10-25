@@ -26,6 +26,13 @@ require_once get_stylesheet_directory() . '/includes/class-lnmc-ai-chat.php';
 require_once get_stylesheet_directory() . '/includes/class-lnmc-gallery.php';
 
 /**
+ * LNMC Homepage Hero Slider — [lnmc_hero_slider] shortcode.
+ * 4-slide accessible slider with Dribbble-style card deck and ambient video.
+ */
+require_once get_stylesheet_directory() . '/includes/class-lnmc-hero-slider.php';
+LNMC_Hero_Slider::init();
+
+/**
  * Sister-organization contact panel — prints the website, email and social
  * links the community-partners plugin stores but never renders.
  */
