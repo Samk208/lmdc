@@ -42,17 +42,18 @@
                 card.setAttribute('data-go', targetSlideNum);
                 var slideEl = slides[targetIdx];
                 if (slideEl) {
-                    var titleEl = slideEl.querySelector('.lnmc-hero__title');
-                    var badgeEl = slideEl.querySelector('.lnmc-hero__badge');
-                    var numEl = card.querySelector('.lnmc-hero__card-num');
+                    var label = slideEl.getAttribute('data-label') || '';
                     var labelEl = card.querySelector('.lnmc-hero__card-label');
-                    if (numEl) numEl.textContent = targetSlideNum < 10 ? '0' + targetSlideNum : targetSlideNum;
-                    if (labelEl) labelEl.textContent = badgeEl ? badgeEl.textContent : (titleEl ? titleEl.textContent : '');
-                    
+                    if (labelEl) labelEl.textContent = label;
+                    card.setAttribute('aria-label', 'Show slide: ' + label);
+
+                    // Slide 3 has no <img>; its video poster stands in as the thumbnail.
                     var thumb = card.querySelector('.lnmc-hero__card-thumb img');
-                    var slideImg = slideEl.querySelector('.lnmc-hero__img') || slideEl.querySelector('img');
-                    if (thumb && slideImg) {
-                        thumb.src = slideImg.currentSrc || slideImg.src;
+                    var slideImg = slideEl.querySelector('.lnmc-hero__img');
+                    var slideVideo = slideEl.querySelector('video');
+                    var thumbSrc = slideImg ? (slideImg.currentSrc || slideImg.src) : (slideVideo ? slideVideo.poster : '');
+                    if (thumb && thumbSrc) {
+                        thumb.src = thumbSrc;
                     }
                 }
                 offset++;

@@ -22,10 +22,18 @@ if (! defined('ABSPATH')) {
 class LNMC_Hero_Slider
 {
     /**
-     * Target URL for Slide 3 guide CTA.
-     * Switch to '/liberia/' once entity batch B1 pages are published.
+     * Slide 3 points at the Liberia guide once its hub is published, and at
+     * the gallery until then, so the hero can ship before or after the guide.
      */
-    const SLIDE_3_CTA_HREF = '/gallery/';
+    private static function slide_3_cta(): array
+    {
+        $guide = get_page_by_path('liberia');
+        if ($guide && 'publish' === $guide->post_status) {
+            return array(get_permalink($guide), 'Explore the Liberia guide');
+        }
+
+        return array(home_url('/gallery/'), 'See the photo gallery');
+    }
 
     public static function init(): void
     {
@@ -117,8 +125,7 @@ class LNMC_Hero_Slider
         $s4_m_url = $s4_mobile ? wp_get_attachment_url($s4_mobile->ID) : $s4_d_url;
         $s4_alt   = $s4_desktop ? get_post_meta($s4_desktop->ID, '_wp_attachment_image_alt', true) : 'Reception guests in gold gele and embroidery';
 
-        // Public domain Natural Earth Liberia map path (Admin 0, ISO LBR)
-        $liberia_svg_path = 'M 373.9,114.0 L 368.4,145.9 L 380.2,199.1 L 354.6,247.9 L 389.0,278.1 L 426.4,285.4 L 476.4,331.4 L 480.0,374.8 L 468.7,406.8 L 441.2,437.4 L 380.0,480.0 L 340.2,439.4 L 285.0,391.8 L 244.6,373.4 L 180.2,331.6 L 140.0,300.2 L 80.0,265.4 L 20.0,230.0 L 50.2,180.4 L 105.0,140.2 L 160.0,110.0 L 220.4,85.2 L 280.0,50.0 L 320.0,20.0 L 350.2,50.4 L 365.0,85.0 Z';
+        list($s3_cta_href, $s3_cta_label) = self::slide_3_cta();
 
         ob_start();
         ?>
@@ -126,7 +133,7 @@ class LNMC_Hero_Slider
             <div class="lnmc-hero__track">
                 
                 <!-- SLIDE 1: Who We Are -->
-                <div class="lnmc-hero__slide is-active" data-slide="1" role="group" aria-roledescription="slide" aria-label="1 of 4">
+                <div class="lnmc-hero__slide is-active" data-slide="1" data-label="Our mission" role="group" aria-roledescription="slide" aria-label="1 of 4">
                     <div class="lnmc-hero__media">
                         <picture>
                             <?php if ($s1_m_url): ?>
@@ -137,18 +144,17 @@ class LNMC_Hero_Slider
                         <div class="lnmc-hero__overlay"></div>
                     </div>
                     <div class="lnmc-hero__content">
-                        <span class="lnmc-hero__badge">LNMC Mission</span>
                         <!-- DRAFT copy, awaiting owner approval -->
                         <h1 class="lnmc-hero__title">Empowering the Liberian Muslim Diaspora</h1>
-                        <p class="lnmc-hero__desc">Building community, preserving heritage, and empowering generations across the United States and Liberia.</p>
+                        <p class="lnmc-hero__desc">Faith, heritage and mutual support for Liberian Muslim families, wherever they have made their home.</p>
                         <div class="lnmc-hero__actions">
-                            <a href="/about/" class="lnmc-hero__cta lnmc-hero__cta--gold">Learn about our mission <span aria-hidden="true">&rarr;</span></a>
+                            <a href="<?php echo esc_url(home_url('/about/')); ?>" class="lnmc-hero__cta lnmc-hero__cta--gold">Learn about our mission</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 2: Sister Organizations -->
-                <div class="lnmc-hero__slide" data-slide="2" role="group" aria-roledescription="slide" aria-label="2 of 4">
+                <div class="lnmc-hero__slide lnmc-hero__slide--split" data-slide="2" data-label="Sister organizations" role="group" aria-roledescription="slide" aria-label="2 of 4">
                     <div class="lnmc-hero__media">
                         <picture>
                             <?php if ($s2_m_url): ?>
@@ -159,20 +165,19 @@ class LNMC_Hero_Slider
                         <div class="lnmc-hero__overlay"></div>
                     </div>
                     <div class="lnmc-hero__content">
-                        <span class="lnmc-hero__badge">Our Network</span>
                         <!-- DRAFT copy, awaiting owner approval -->
                         <h2 class="lnmc-hero__title">One people, connected across continents</h2>
-                        <p class="lnmc-hero__desc">Partnering with community associations to unite and serve Liberian Muslims worldwide.</p>
+                        <p class="lnmc-hero__desc">Ten sister organizations in Liberia, North America, Europe, Ghana and Australia work alongside us.</p>
                         <div class="lnmc-hero__actions">
-                            <a href="/sister-organizations/" class="lnmc-hero__cta lnmc-hero__cta--cream">Meet our sister organizations <span aria-hidden="true">&rarr;</span></a>
+                            <a href="<?php echo esc_url(home_url('/sister-organizations/')); ?>" class="lnmc-hero__cta lnmc-hero__cta--cream">Meet our sister organizations</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 3: Know Liberia (Designed Graphic + Ambient Desktop Video) -->
-                <div class="lnmc-hero__slide lnmc-hero__slide--graphic" data-slide="3" role="group" aria-roledescription="slide" aria-label="3 of 4">
+                <div class="lnmc-hero__slide lnmc-hero__slide--graphic" data-slide="3" data-label="Know Liberia" role="group" aria-roledescription="slide" aria-label="3 of 4">
                     <div class="lnmc-hero__media lnmc-hero__media--graphic">
-                        <!-- Designed Graphic: Deep Green + Islamic Geometric Pattern + Natural Earth Liberia Map -->
+                        <!-- Deep green + geometric pattern; the poster/video sit on top on desktop -->
                         <div class="lnmc-hero__graphic-bg" aria-hidden="true">
                             <svg class="lnmc-hero__pattern" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
@@ -187,10 +192,6 @@ class LNMC_Hero_Slider
                                     </pattern>
                                 </defs>
                                 <rect width="100%" height="100%" fill="url(#lnmc-islamic-grid)"/>
-                            </svg>
-                            <!-- Public Domain Map Data: Natural Earth (ISO: LBR) -->
-                            <svg class="lnmc-hero__liberia-map" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                                <path d="<?php echo esc_attr($liberia_svg_path); ?>" fill="none" stroke="#FFB300" stroke-width="3" stroke-dasharray="6 4" opacity="0.45"/>
                             </svg>
                         </div>
 
@@ -207,18 +208,17 @@ class LNMC_Hero_Slider
                         <span class="lnmc-hero__video-caption">Temple of Justice, Monrovia · video: VitalisNwenyi / Pexels</span>
                     </div>
                     <div class="lnmc-hero__content">
-                        <span class="lnmc-hero__badge">Heritage & Knowledge</span>
                         <!-- DRAFT copy, awaiting owner approval -->
                         <h2 class="lnmc-hero__title">Know Liberia: its people, faith and institutions</h2>
-                        <p class="lnmc-hero__desc">A comprehensive guide to Liberia’s history, cultural heritage, and diaspora connections.</p>
+                        <p class="lnmc-hero__desc">Sourced reference pages on Liberia’s government, ethnic groups, religion and diaspora organizations.</p>
                         <div class="lnmc-hero__actions">
-                            <a href="<?php echo esc_url(self::SLIDE_3_CTA_HREF); ?>" class="lnmc-hero__cta lnmc-hero__cta--green">Explore the Liberia guide <span aria-hidden="true">&rarr;</span></a>
+                            <a href="<?php echo esc_url($s3_cta_href); ?>" class="lnmc-hero__cta lnmc-hero__cta--cream"><?php echo esc_html($s3_cta_label); ?></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 4: Join Us -->
-                <div class="lnmc-hero__slide" data-slide="4" role="group" aria-roledescription="slide" aria-label="4 of 4">
+                <div class="lnmc-hero__slide lnmc-hero__slide--split" data-slide="4" data-label="Join us" role="group" aria-roledescription="slide" aria-label="4 of 4">
                     <div class="lnmc-hero__media">
                         <picture>
                             <?php if ($s4_m_url): ?>
@@ -229,12 +229,11 @@ class LNMC_Hero_Slider
                         <div class="lnmc-hero__overlay"></div>
                     </div>
                     <div class="lnmc-hero__content">
-                        <span class="lnmc-hero__badge">Get Involved</span>
                         <!-- DRAFT copy, awaiting owner approval -->
                         <h2 class="lnmc-hero__title">Your community, wherever you are</h2>
-                        <p class="lnmc-hero__desc">Join a vibrant network dedicated to faith, mutual support, and civic leadership.</p>
+                        <p class="lnmc-hero__desc">Become a member to stay close to events, news and fellow Liberian Muslims across the diaspora.</p>
                         <div class="lnmc-hero__actions">
-                            <a href="/membership/" class="lnmc-hero__cta lnmc-hero__cta--gold">Become a member <span aria-hidden="true">&rarr;</span></a>
+                            <a href="<?php echo esc_url(home_url('/membership/')); ?>" class="lnmc-hero__cta lnmc-hero__cta--gold">Become a member</a>
                         </div>
                     </div>
                 </div>
@@ -243,16 +242,15 @@ class LNMC_Hero_Slider
 
             <!-- Card Deck (Dribbble Signature Pattern): Previews Upcoming Slides on Desktop -->
             <aside class="lnmc-hero__deck" aria-label="Next stories">
-                <button type="button" class="lnmc-hero__card" data-go="2" aria-label="Jump to slide 2: Sister Organizations">
+                <button type="button" class="lnmc-hero__card" data-go="2" aria-label="Show slide: Sister organizations">
                     <span class="lnmc-hero__card-thumb">
                         <img src="<?php echo esc_url($s2_m_url); ?>" alt="" loading="lazy">
                     </span>
                     <span class="lnmc-hero__card-text">
-                        <span class="lnmc-hero__card-num">02</span>
-                        <span class="lnmc-hero__card-label">Sister Organizations</span>
+                        <span class="lnmc-hero__card-label">Sister organizations</span>
                     </span>
                 </button>
-                <button type="button" class="lnmc-hero__card" data-go="3" aria-label="Jump to slide 3: Know Liberia">
+                <button type="button" class="lnmc-hero__card" data-go="3" aria-label="Show slide: Know Liberia">
                     <span class="lnmc-hero__card-thumb lnmc-hero__card-thumb--graphic">
                         <?php if ($s3_p_url): ?>
                             <img src="<?php echo esc_url($s3_p_url); ?>" alt="" loading="lazy">
@@ -261,17 +259,15 @@ class LNMC_Hero_Slider
                         <?php endif; ?>
                     </span>
                     <span class="lnmc-hero__card-text">
-                        <span class="lnmc-hero__card-num">03</span>
                         <span class="lnmc-hero__card-label">Know Liberia</span>
                     </span>
                 </button>
-                <button type="button" class="lnmc-hero__card" data-go="4" aria-label="Jump to slide 4: Join LNMC">
+                <button type="button" class="lnmc-hero__card" data-go="4" aria-label="Show slide: Join us">
                     <span class="lnmc-hero__card-thumb">
                         <img src="<?php echo esc_url($s4_m_url); ?>" alt="" loading="lazy">
                     </span>
                     <span class="lnmc-hero__card-text">
-                        <span class="lnmc-hero__card-num">04</span>
-                        <span class="lnmc-hero__card-label">Join LNMC</span>
+                        <span class="lnmc-hero__card-label">Join us</span>
                     </span>
                 </button>
             </aside>
