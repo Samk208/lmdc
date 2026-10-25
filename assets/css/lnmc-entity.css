@@ -64,7 +64,7 @@ body.lnmc-entity-page #main-content #left-area {
   text-decoration: underline;
   text-decoration-color: rgba(27, 94, 32, 0.4);
   text-underline-offset: 0.18em;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .lnmc-entity-page .entry-content a:hover {
@@ -199,4 +199,326 @@ body.lnmc-entity-page #main-content #left-area {
   .lnmc-entity-page .entry-content {
     font-size: 1rem;
   }
+}
+
+/* ==========================================================================
+   Visual components for reference pages
+   Plain HTML + CSS so every value stays readable text (screen readers,
+   search engines, copy/paste). No component carries its own data.
+   ========================================================================== */
+
+/* "In short" answer box, the page's first visual after the lede. */
+.lnmc-entity-page .lnmc-entity-answer {
+  margin: 0 0 2rem;
+  padding: 1.1rem 1.4rem 0.6rem;
+  border: 1px solid var(--lnmc-ent-rule);
+  border-radius: 10px;
+  background: #f3f8f3;
+}
+
+.lnmc-entity-page .entry-content .lnmc-entity-answer h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.lnmc-entity-page .entry-content .lnmc-entity-answer ul {
+  margin: 0 0 0.6rem;
+}
+
+/* Callouts: note (green), caution (gold), key point (cream). */
+.lnmc-entity-page .lnmc-callout {
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.2rem;
+  border-left: 4px solid var(--lnmc-ent-green);
+  border-radius: 0 8px 8px 0;
+  background: #f3f8f3;
+}
+
+.lnmc-entity-page .lnmc-callout--caution {
+  border-left-color: #b26a00;
+  background: #fff4e0;
+}
+
+.lnmc-entity-page .lnmc-callout--key {
+  border-left-color: var(--lnmc-ent-gold);
+  background: var(--lnmc-ent-cream);
+}
+
+.lnmc-entity-page .entry-content .lnmc-callout p {
+  max-width: none;
+  margin: 0;
+}
+
+.lnmc-entity-page .lnmc-callout strong:first-child {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--lnmc-ent-ink);
+}
+
+/* Figures with credit lines. */
+.lnmc-entity-page .lnmc-entity-figure {
+  margin: 1.75rem 0;
+}
+
+/* Tall images (maps, script charts) are capped by height and centred, so a
+   portrait figure never fills a whole screen. */
+.lnmc-entity-page .lnmc-entity-figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 480px;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+.lnmc-entity-page .lnmc-entity-figure--narrow img {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.lnmc-entity-page .lnmc-entity-figure figcaption {
+  margin-top: 0.5rem;
+  color: var(--lnmc-ent-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Tables scroll inside their own box on small screens. */
+.lnmc-entity-page .lnmc-entity-table {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--lnmc-ent-rule);
+  border-radius: 8px;
+}
+
+.lnmc-entity-page .lnmc-entity-table table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border: 0;
+}
+
+/* Tables of four or more columns keep a readable width and scroll inside
+   their box on phones; narrower tables fit the screen. */
+.lnmc-entity-page .lnmc-entity-table table:has(th:nth-child(4)) {
+  min-width: 560px;
+}
+
+@media (max-width: 480px) {
+  .lnmc-entity-page .lnmc-entity-table th,
+  .lnmc-entity-page .lnmc-entity-table td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+.lnmc-entity-page .lnmc-entity-table th {
+  background: var(--lnmc-ent-green);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.lnmc-entity-page .lnmc-entity-table tbody tr:nth-child(even) {
+  background: #f6f9f6;
+}
+
+.lnmc-entity-page .lnmc-entity-table td,
+.lnmc-entity-page .lnmc-entity-table th {
+  border-bottom: 1px solid var(--lnmc-ent-rule);
+}
+
+.lnmc-entity-page .lnmc-entity-table caption {
+  caption-side: bottom;
+  padding: 0.5rem 0.75rem;
+  color: var(--lnmc-ent-muted);
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+/* Section cards on hub pages. */
+.lnmc-entity-page .entry-content ul.lnmc-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.85rem;
+  max-width: none;
+  margin: 1.25rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+#main-content .lnmc-entity-page .entry-content ul.lnmc-cards li,
+.lnmc-entity-page #main-content .entry-content ul.lnmc-cards li {
+  margin: 0;
+  list-style: none;
+}
+
+.lnmc-entity-page .entry-content .lnmc-cards a {
+  display: block;
+  height: 100%;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--lnmc-ent-rule);
+  border-top: 3px solid var(--lnmc-ent-gold);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--lnmc-ent-ink);
+  text-decoration: none;
+}
+
+.lnmc-entity-page .entry-content .lnmc-cards a:hover {
+  border-color: var(--lnmc-ent-green);
+}
+
+.lnmc-entity-page .lnmc-cards strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--lnmc-ent-green);
+  font-size: 1.05rem;
+}
+
+.lnmc-entity-page .lnmc-cards span {
+  display: block;
+  color: var(--lnmc-ent-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* Three-branch diagram: one column per branch, stacked on phones. */
+.lnmc-entity-page .lnmc-branches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.lnmc-entity-page .lnmc-branch {
+  padding: 1rem;
+  border: 1px solid var(--lnmc-ent-rule);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.lnmc-entity-page .entry-content .lnmc-branch h3 {
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--lnmc-ent-gold);
+  color: var(--lnmc-ent-green);
+  font-size: 1.1rem;
+}
+
+.lnmc-entity-page .entry-content .lnmc-branch ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+}
+
+/* style.css caps every #main-content <p> at 65ch with an ID selector, so
+   full-width paragraphs need the ID too. */
+body.lnmc-entity-page #main-content p.lnmc-branches-root,
+body.lnmc-entity-page #main-content .lnmc-callout p {
+  max-width: none;
+}
+
+.lnmc-entity-page .entry-content > p.lnmc-branches-root {
+  margin: 1.5rem 0 -0.25rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--lnmc-ent-green);
+  color: #ffffff;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Timeline: a real sequence, so the dates lead each item. */
+.lnmc-entity-page .entry-content ol.lnmc-timeline {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+  color: var(--lnmc-ent-ink);
+  font-size: 1rem;
+}
+
+/* ID-scoped: the generic #main-content li reset above would otherwise zero
+   the padding the dates and line need. */
+body.lnmc-entity-page #main-content ol.lnmc-timeline li {
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.1rem 1.6rem;
+  border-left: 2px solid var(--lnmc-ent-rule);
+  list-style: none;
+}
+
+body.lnmc-entity-page #main-content ol.lnmc-timeline li::marker {
+  content: "";
+}
+
+body.lnmc-entity-page #main-content ol.lnmc-timeline li:last-child {
+  border-left-color: transparent;
+}
+
+.lnmc-entity-page .lnmc-timeline li::before {
+  content: "";
+  position: absolute;
+  top: 0.35rem;
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--lnmc-ent-green);
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.lnmc-entity-page .lnmc-timeline time {
+  display: block;
+  color: var(--lnmc-ent-green);
+  font-weight: 700;
+}
+
+/* Horizontal bar chart: label, bar, value, all text. */
+.lnmc-entity-page .lnmc-bars {
+  margin: 1.5rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--lnmc-ent-rule);
+  border-radius: 8px;
+}
+
+.lnmc-entity-page .lnmc-bar {
+  display: grid;
+  grid-template-columns: minmax(7rem, 30%) 1fr 3.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.45rem 0;
+  font-size: 0.95rem;
+}
+
+.lnmc-entity-page .lnmc-bar__track {
+  height: 0.85rem;
+  border-radius: 4px;
+  background: #eef2ee;
+}
+
+.lnmc-entity-page .lnmc-bar__fill {
+  display: block;
+  width: var(--v);
+  min-width: 3px;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--lnmc-ent-green);
+}
+
+.lnmc-entity-page .lnmc-bar--accent .lnmc-bar__fill {
+  background: var(--lnmc-ent-gold);
+}
+
+.lnmc-entity-page .lnmc-bar__value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+}
+
+.lnmc-entity-page .lnmc-bars figcaption {
+  margin-top: 0.6rem;
+  color: var(--lnmc-ent-muted);
+  font-size: 0.85rem;
 }
