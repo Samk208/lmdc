@@ -31,6 +31,12 @@ require_once get_stylesheet_directory() . '/includes/class-lnmc-gallery.php';
  */
 require_once get_stylesheet_directory() . '/includes/class-lnmc-org-profile.php';
 
+/**
+ * Entity schema JSON-LD — emits schema.org node for Liberia reference pages
+ * from _lnmc_entity post meta.
+ */
+require_once get_stylesheet_directory() . '/includes/class-lnmc-entity-schema.php';
+
 function divichild_enqueue_scripts()
 {
     // Brand fonts: Amiri (headings) + Source Sans 3 (body) per client brief.
