@@ -230,7 +230,7 @@ class LNMC_Hero_Slider
                         </div>
 
                         <!-- Video Element: Desktop Only (>= 1024px), strictly no autoplay attribute, preload none -->
-                        <video class="lnmc-hero__video" preload="none" muted playsinline loop data-poster="<?php echo esc_url($s3_p_url); ?>" data-src-mp4="<?php echo esc_url($s3_mp4_url); ?>" data-src-webm="<?php echo esc_url($s3_webm_url); ?>">
+                        <video class="lnmc-hero__video" preload="none" muted playsinline loop data-poster="<?php echo esc_url(self::webp_url($s3_p_url) ?: $s3_p_url); ?>" data-src-mp4="<?php echo esc_url($s3_mp4_url); ?>" data-src-webm="<?php echo esc_url($s3_webm_url); ?>">
                             <?php if ($s3_webm_url): ?>
                                 <source src="<?php echo esc_url($s3_webm_url); ?>" type="video/webm">
                             <?php endif; ?>
@@ -273,7 +273,7 @@ class LNMC_Hero_Slider
             <aside class="lnmc-hero__deck" aria-label="Next stories">
                 <button type="button" class="lnmc-hero__card" data-go="2" aria-label="Show slide: Sister organizations">
                     <span class="lnmc-hero__card-thumb">
-                        <img data-src="<?php echo esc_url($s2_m_url); ?>" alt="">
+                        <img data-src="<?php echo esc_url(self::webp_url($s2_m_url) ?: $s2_m_url); ?>" alt="">
                     </span>
                     <span class="lnmc-hero__card-text">
                         <span class="lnmc-hero__card-label">Sister organizations</span>
@@ -282,7 +282,7 @@ class LNMC_Hero_Slider
                 <button type="button" class="lnmc-hero__card" data-go="3" aria-label="Show slide: Know Liberia">
                     <span class="lnmc-hero__card-thumb lnmc-hero__card-thumb--graphic">
                         <?php if ($s3_p_url): ?>
-                            <img data-src="<?php echo esc_url($s3_p_url); ?>" alt="">
+                            <img data-src="<?php echo esc_url(self::webp_url($s3_p_url) ?: $s3_p_url); ?>" alt="">
                         <?php else: ?>
                             <span class="lnmc-hero__card-icon" aria-hidden="true">&starf;</span>
                         <?php endif; ?>
@@ -293,7 +293,7 @@ class LNMC_Hero_Slider
                 </button>
                 <button type="button" class="lnmc-hero__card" data-go="4" aria-label="Show slide: Join us">
                     <span class="lnmc-hero__card-thumb">
-                        <img data-src="<?php echo esc_url($s4_m_url); ?>" alt="">
+                        <img data-src="<?php echo esc_url(self::webp_url($s4_m_url) ?: $s4_m_url); ?>" alt="">
                     </span>
                     <span class="lnmc-hero__card-text">
                         <span class="lnmc-hero__card-label">Join us</span>
