@@ -3032,7 +3032,7 @@ body.home #page-container .main-content .et_pb_section_2 .et_pb_row_2 {
     border-radius: 18px;
     background:
         linear-gradient(90deg, rgba(3, 26, 8, 0.76), rgba(14, 61, 18, 0.52)),
-        url('/wp-content/uploads/2026/04/mariam-conteh-classroom-1024x683.jpg');
+        url('/wp-content/uploads/2026/04/mariam-conteh-classroom-683x1024.jpg');
     background-size: cover;
     background-position: center 42%;
     box-shadow: 0 24px 60px rgba(14, 61, 18, 0.14);
@@ -3275,7 +3275,7 @@ body.home #page-container .main-content .et_pb_section_5 {
     padding: clamp(58px, 7vw, 84px) 0 !important;
     background:
         linear-gradient(90deg, rgba(3, 26, 8, 0.88), rgba(14, 61, 18, 0.74)),
-        url('/wp-content/uploads/2026/04/mohammed-sesay-mosque-1024x683.jpg') !important;
+        url('/wp-content/uploads/2026/04/mohammed-sesay-mosque-683x1024.jpg') !important;
     background-size: cover !important;
     background-position: center 42% !important;
 }
