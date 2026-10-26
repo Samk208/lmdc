@@ -415,7 +415,8 @@ body.lnmc-entity-page #main-content #left-area {
 /* style.css caps every #main-content <p> at 65ch with an ID selector, so
    full-width paragraphs need the ID too. */
 body.lnmc-entity-page #main-content p.lnmc-branches-root,
-body.lnmc-entity-page #main-content .lnmc-callout p {
+body.lnmc-entity-page #main-content .lnmc-callout p,
+body.lnmc-entity-page #main-content .lnmc-entity-answer li {
   max-width: none;
 }
 

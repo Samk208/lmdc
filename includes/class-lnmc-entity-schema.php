@@ -30,6 +30,18 @@ class LNMC_Entity_Schema
         add_action('wp_head', array(__CLASS__, 'render_schema'), 20);
         add_action('wp_enqueue_scripts', array(__CLASS__, 'enqueue_assets'));
         add_filter('body_class', array(__CLASS__, 'body_class'));
+        add_action('wp', array(__CLASS__, 'disable_autop'));
+    }
+
+    /**
+     * Reference pages are hand-authored HTML, often formatted with line
+     * breaks inside paragraphs. wpautop would turn each of those into <br>.
+     */
+    public static function disable_autop(): void
+    {
+        if (self::is_entity_page()) {
+            remove_filter('the_content', 'wpautop');
+        }
     }
 
     /**
