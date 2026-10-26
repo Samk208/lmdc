@@ -91,8 +91,12 @@ class LNMC_Hero_Slider
      */
     public static function render(): string
     {
-        wp_enqueue_style('lnmc-hero');
-        wp_enqueue_script('lnmc-hero');
+        // Shortcodes also run off-screen on other pages; only load assets where the hero is shown.
+        $page = get_queried_object();
+        if ($page instanceof WP_Post && has_shortcode($page->post_content, 'lnmc_hero_slider')) {
+            wp_enqueue_style('lnmc-hero');
+            wp_enqueue_script('lnmc-hero');
+        }
 
         // Fetch photography attachments
         $s1_desktop = self::get_slide_attachment(1, 'desktop');

@@ -62,7 +62,7 @@ class LNMC_Entity_Schema
         wp_enqueue_style(
             'lnmc-entity',
             get_stylesheet_directory_uri() . '/assets/css/lnmc-entity.css',
-            array('lnmc-child-style'),
+            array(),
             filemtime(get_stylesheet_directory() . '/assets/css/lnmc-entity.css')
         );
     }

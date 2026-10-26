@@ -177,8 +177,12 @@ class LNMC_Gallery
                 : '';
         }
 
-        wp_enqueue_style('lnmc-gallery');
-        wp_enqueue_script('lnmc-gallery');
+        // Shortcodes also run off-screen on other pages; only load assets where the gallery is shown.
+        $page = get_queried_object();
+        if ($page instanceof WP_Post && has_shortcode($page->post_content, 'lnmc_gallery')) {
+            wp_enqueue_style('lnmc-gallery');
+            wp_enqueue_script('lnmc-gallery');
+        }
 
         $items    = array();
         $feature  = array(0, 5, 10); // double-width tiles that break up the grid

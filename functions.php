@@ -57,10 +57,7 @@ function divichild_enqueue_scripts()
         array(),
         null
     );
-    // Cache-bust on every change to avoid serving stale CSS/JS while iterating.
-    $asset_ver = filemtime(get_stylesheet_directory() . '/style.css');
-    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
-    wp_enqueue_style('lnmc-child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'), $asset_ver);
+    // Divi 4.10+ enqueues the child style.css itself (handle `divi-style`).
 
     wp_enqueue_script('custom-js', get_stylesheet_directory_uri() . '/js/scripts.js', array('jquery'), filemtime(get_stylesheet_directory() . '/js/scripts.js'), true);
     wp_enqueue_script('lnmc-animations', get_stylesheet_directory_uri() . '/js/lnmc-animations.js', array(), filemtime(get_stylesheet_directory() . '/js/lnmc-animations.js'), true);
@@ -140,7 +137,13 @@ add_action('wp_head', function () {
         return;
     }
 
-    echo '<link rel="preload" as="image" href="' . esc_url(content_url('uploads/2026/04/heritage-preservation-project-1024x683.jpg')) . '" imagesrcset="' . esc_url(content_url('uploads/2026/04/heritage-preservation-project-768x512.jpg')) . ' 768w, ' . esc_url(content_url('uploads/2026/04/heritage-preservation-project-1024x683.jpg')) . ' 1024w" imagesizes="100vw" fetchpriority="high" />' . "\n";
+    // Slide 1 of the hero slider is the LCP image; preload the crop each viewport will use.
+    foreach (array('mobile' => '(max-width: 767px)', 'desktop' => '(min-width: 768px)') as $crop => $media) {
+        $img = LNMC_Hero_Slider::get_slide_attachment(1, $crop);
+        if ($img) {
+            echo '<link rel="preload" as="image" href="' . esc_url(wp_get_attachment_url($img->ID)) . '" media="' . esc_attr($media) . '" fetchpriority="high" />' . "\n";
+        }
+    }
 }, 1);
 
 /**
@@ -187,9 +190,8 @@ add_action('et_after_main_content', function () {
  */
 add_action('wp_head', function () {
     $site_url   = esc_url(home_url('/'));
-    $site_name  = esc_html(get_bloginfo('name'));
     $site_desc  = esc_html(get_bloginfo('description'));
-    $logo_url   = esc_url(has_custom_logo() ? wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full') : '');
+    $logo_url   = esc_url(has_custom_logo() ? wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full') : get_site_icon_url(512));
 
     $org = array(
         '@context'    => 'https://schema.org',
@@ -215,21 +217,8 @@ add_action('wp_head', function () {
         $org['image'] = $logo_url;
     }
 
-    $website = array(
-        '@context' => 'https://schema.org',
-        '@type'    => 'WebSite',
-        '@id'      => $site_url . '#website',
-        'url'      => $site_url,
-        'name'     => $site_name,
-        'publisher' => array('@id' => $site_url . '#org'),
-        'potentialAction' => array(
-            '@type'       => 'SearchAction',
-            'target'      => $site_url . '?s={search_term_string}',
-            'query-input' => 'required name=search_term_string',
-        ),
-    );
-
-    echo "\n<script type=\"application/ld+json\">" . wp_json_encode(array($org, $website)) . "</script>\n";
+    // No WebSite node here: Rank Math emits one with the same @id, and two conflicting copies confuse parsers.
+    echo "\n<script type=\"application/ld+json\">" . wp_json_encode($org) . "</script>\n";
 }, 5);
 
 /**
