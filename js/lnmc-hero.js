@@ -81,7 +81,28 @@
             }
         }
 
+        // Slides 2-4, their deck thumbnails and the video poster are rendered with
+        // data-* sources so they do not compete with slide 1 (the LCP image).
+        var deferredLoaded = false;
+        function loadDeferred() {
+            if (deferredLoaded) return;
+            deferredLoaded = true;
+            hero.querySelectorAll('[data-srcset]').forEach(function (el) {
+                el.srcset = el.getAttribute('data-srcset');
+                el.removeAttribute('data-srcset');
+            });
+            hero.querySelectorAll('img[data-src]').forEach(function (img) {
+                img.addEventListener('load', function () { updateDeck(currentIndex); }, { once: true });
+                img.src = img.getAttribute('data-src');
+                img.removeAttribute('data-src');
+            });
+            if (video && video.getAttribute('data-poster')) {
+                video.poster = video.getAttribute('data-poster');
+            }
+        }
+
         function goToSlide(index) {
+            loadDeferred();
             if (index < 0) {
                 index = totalSlides - 1;
             } else if (index >= totalSlides) {
@@ -227,6 +248,12 @@
                 handleVideo(currentIndex, true);
             }
         });
+
+        if (document.readyState === 'complete') {
+            loadDeferred();
+        } else {
+            window.addEventListener('load', loadDeferred, { once: true });
+        }
 
         // Initialize first slide and timer
         updateDeck(0);

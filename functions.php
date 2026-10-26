@@ -47,13 +47,12 @@ require_once get_stylesheet_directory() . '/includes/class-lnmc-entity-schema.ph
 function divichild_enqueue_scripts()
 {
     // Brand fonts: Amiri (headings) + Source Sans 3 (body) per client brief.
-    // Includes Playfair Display + Space Grotesk as documented fallbacks for
-    // any Divi module that explicitly references them. Owned by the THEME
-    // (not the membership plugin) so font availability survives plugin
-    // upgrades or replacement.
+    // Playfair Display and Source Sans Pro already come from Divi's own font
+    // request; Space Grotesk is only a CSS fallback. display=optional: no
+    // late font swap, so no layout shift (CLS) when the font arrives.
     wp_enqueue_style(
         'lnmc-fonts',
-        'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Source+Sans+3:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=optional',
         array(),
         null
     );
@@ -137,14 +136,25 @@ add_action('wp_head', function () {
         return;
     }
 
-    // Slide 1 of the hero slider is the LCP image; preload the crop each viewport will use.
+    // Slide 1 of the hero slider is the LCP image; preload the crop (WebP when present) each viewport will use.
     foreach (array('mobile' => '(max-width: 767px)', 'desktop' => '(min-width: 768px)') as $crop => $media) {
         $img = LNMC_Hero_Slider::get_slide_attachment(1, $crop);
         if ($img) {
-            echo '<link rel="preload" as="image" href="' . esc_url(wp_get_attachment_url($img->ID)) . '" media="' . esc_attr($media) . '" fetchpriority="high" />' . "\n";
+            $url  = wp_get_attachment_url($img->ID);
+            $webp = LNMC_Hero_Slider::webp_url($url);
+            echo '<link rel="preload" as="image" href="' . esc_url($webp ?: $url) . '"' . ($webp ? ' type="image/webp"' : '') . ' media="' . esc_attr($media) . '" fetchpriority="high" />' . "\n";
         }
     }
 }, 1);
+
+add_action('wp_head', function () {
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
+}, 1);
+
+// Divi's Google Fonts request uses display=swap, which re-lays out text when the font lands (CLS).
+add_filter('style_loader_src', function ($src) {
+    return false !== strpos($src, 'fonts.googleapis.com') ? str_replace('display=swap', 'display=optional', $src) : $src;
+});
 
 /**
  * FIX: Add Skip-to-Content Link for keyboard navigation

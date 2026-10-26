@@ -87,6 +87,46 @@ class LNMC_Hero_Slider
     }
 
     /**
+     * URL of the .webp sibling of an uploaded image, or '' when none has been generated.
+     */
+    public static function webp_url(string $url): string
+    {
+        if ('' === $url) {
+            return '';
+        }
+        $uploads = wp_get_upload_dir();
+        $webp    = preg_replace('/\.jpe?g$/i', '.webp', $url);
+        $path    = str_replace($uploads['baseurl'], $uploads['basedir'], $webp);
+        return ($webp !== $url && file_exists($path)) ? $webp : '';
+    }
+
+    /**
+     * <picture> for one slide. Slide 1 loads at once (it is the LCP image); the
+     * others carry data-src/data-srcset and lnmc-hero.js fills them in after the
+     * page has loaded, so they do not compete with slide 1 for bandwidth.
+     */
+    private static function picture(string $desktop, string $mobile, string $alt, bool $eager): string
+    {
+        $set  = $eager ? 'srcset' : 'data-srcset';
+        $html = '<picture>';
+        foreach (array(array($mobile, ' media="(max-width: 767px)"'), array($desktop, '')) as list($url, $media)) {
+            if (! $url || ($media && $url === $desktop)) {
+                continue;
+            }
+            $webp = self::webp_url($url);
+            if ($webp) {
+                $html .= '<source type="image/webp"' . $media . ' ' . $set . '="' . esc_url($webp) . '">';
+            }
+            if ($media) {
+                $html .= '<source' . $media . ' ' . $set . '="' . esc_url($url) . '">';
+            }
+        }
+        $html .= '<img ' . ($eager ? 'src' : 'data-src') . '="' . esc_url($desktop) . '" alt="' . esc_attr($alt) . '" class="lnmc-hero__img"'
+            . ($eager ? ' fetchpriority="high"' : '') . '>';
+        return $html . '</picture>';
+    }
+
+    /**
      * Render the shortcode.
      */
     public static function render(): string
@@ -139,12 +179,7 @@ class LNMC_Hero_Slider
                 <!-- SLIDE 1: Who We Are -->
                 <div class="lnmc-hero__slide is-active" data-slide="1" data-label="Our mission" role="group" aria-roledescription="slide" aria-label="1 of 4">
                     <div class="lnmc-hero__media">
-                        <picture>
-                            <?php if ($s1_m_url): ?>
-                                <source media="(max-width: 767px)" srcset="<?php echo esc_url($s1_m_url); ?>">
-                            <?php endif; ?>
-                            <img src="<?php echo esc_url($s1_d_url); ?>" alt="<?php echo esc_attr($s1_alt); ?>" class="lnmc-hero__img" fetchpriority="high">
-                        </picture>
+                        <?php echo self::picture($s1_d_url, $s1_m_url, $s1_alt, true); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in picture() ?>
                         <div class="lnmc-hero__overlay"></div>
                     </div>
                     <div class="lnmc-hero__content">
@@ -160,12 +195,7 @@ class LNMC_Hero_Slider
                 <!-- SLIDE 2: Sister Organizations -->
                 <div class="lnmc-hero__slide lnmc-hero__slide--split" data-slide="2" data-label="Sister organizations" role="group" aria-roledescription="slide" aria-label="2 of 4">
                     <div class="lnmc-hero__media">
-                        <picture>
-                            <?php if ($s2_m_url): ?>
-                                <source media="(max-width: 767px)" srcset="<?php echo esc_url($s2_m_url); ?>">
-                            <?php endif; ?>
-                            <img src="<?php echo esc_url($s2_d_url); ?>" alt="<?php echo esc_attr($s2_alt); ?>" class="lnmc-hero__img" loading="lazy">
-                        </picture>
+                        <?php echo self::picture($s2_d_url, $s2_m_url, $s2_alt, false); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in picture() ?>
                         <div class="lnmc-hero__overlay"></div>
                     </div>
                     <div class="lnmc-hero__content">
@@ -200,7 +230,7 @@ class LNMC_Hero_Slider
                         </div>
 
                         <!-- Video Element: Desktop Only (>= 1024px), strictly no autoplay attribute, preload none -->
-                        <video class="lnmc-hero__video" preload="none" muted playsinline loop poster="<?php echo esc_url($s3_p_url); ?>" data-src-mp4="<?php echo esc_url($s3_mp4_url); ?>" data-src-webm="<?php echo esc_url($s3_webm_url); ?>">
+                        <video class="lnmc-hero__video" preload="none" muted playsinline loop data-poster="<?php echo esc_url($s3_p_url); ?>" data-src-mp4="<?php echo esc_url($s3_mp4_url); ?>" data-src-webm="<?php echo esc_url($s3_webm_url); ?>">
                             <?php if ($s3_webm_url): ?>
                                 <source src="<?php echo esc_url($s3_webm_url); ?>" type="video/webm">
                             <?php endif; ?>
@@ -224,12 +254,7 @@ class LNMC_Hero_Slider
                 <!-- SLIDE 4: Join Us -->
                 <div class="lnmc-hero__slide lnmc-hero__slide--split" data-slide="4" data-label="Join us" role="group" aria-roledescription="slide" aria-label="4 of 4">
                     <div class="lnmc-hero__media">
-                        <picture>
-                            <?php if ($s4_m_url): ?>
-                                <source media="(max-width: 767px)" srcset="<?php echo esc_url($s4_m_url); ?>">
-                            <?php endif; ?>
-                            <img src="<?php echo esc_url($s4_d_url); ?>" alt="<?php echo esc_attr($s4_alt); ?>" class="lnmc-hero__img" loading="lazy">
-                        </picture>
+                        <?php echo self::picture($s4_d_url, $s4_m_url, $s4_alt, false); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in picture() ?>
                         <div class="lnmc-hero__overlay"></div>
                     </div>
                     <div class="lnmc-hero__content">
@@ -248,7 +273,7 @@ class LNMC_Hero_Slider
             <aside class="lnmc-hero__deck" aria-label="Next stories">
                 <button type="button" class="lnmc-hero__card" data-go="2" aria-label="Show slide: Sister organizations">
                     <span class="lnmc-hero__card-thumb">
-                        <img src="<?php echo esc_url($s2_m_url); ?>" alt="" loading="lazy">
+                        <img data-src="<?php echo esc_url($s2_m_url); ?>" alt="">
                     </span>
                     <span class="lnmc-hero__card-text">
                         <span class="lnmc-hero__card-label">Sister organizations</span>
@@ -257,7 +282,7 @@ class LNMC_Hero_Slider
                 <button type="button" class="lnmc-hero__card" data-go="3" aria-label="Show slide: Know Liberia">
                     <span class="lnmc-hero__card-thumb lnmc-hero__card-thumb--graphic">
                         <?php if ($s3_p_url): ?>
-                            <img src="<?php echo esc_url($s3_p_url); ?>" alt="" loading="lazy">
+                            <img data-src="<?php echo esc_url($s3_p_url); ?>" alt="">
                         <?php else: ?>
                             <span class="lnmc-hero__card-icon" aria-hidden="true">&starf;</span>
                         <?php endif; ?>
@@ -268,7 +293,7 @@ class LNMC_Hero_Slider
                 </button>
                 <button type="button" class="lnmc-hero__card" data-go="4" aria-label="Show slide: Join us">
                     <span class="lnmc-hero__card-thumb">
-                        <img src="<?php echo esc_url($s4_m_url); ?>" alt="" loading="lazy">
+                        <img data-src="<?php echo esc_url($s4_m_url); ?>" alt="">
                     </span>
                     <span class="lnmc-hero__card-text">
                         <span class="lnmc-hero__card-label">Join us</span>
