@@ -151,6 +151,25 @@ add_action('wp_head', function () {
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
 }, 1);
 
+// Divi prints the module design styles (header/footer layouts included) in the body, after the
+// content. On a slow connection the header paints with default section padding, then shrinks when
+// those styles arrive and pushes the whole page up (CLS ~0.5 on desktop). Move them into <head>.
+// litespeed_buffer_before runs once per generated page, so the fixed HTML is what gets cached.
+add_filter('litespeed_buffer_before', function ($html) {
+    if (! preg_match_all('#<style id="et-builder-module-design-[^"]*-cached-inline-styles">.*?</style>#s', $html, $m)) {
+        return $html;
+    }
+    $html = str_replace($m[0], '', $html);
+    return preg_replace('#</head>#', implode("\n", $m[0]) . "\n</head>", $html, 1);
+}, 0);
+
+// jquery-migrate is render-blocking and nothing on the front end uses the APIs it shims.
+add_action('wp_default_scripts', function ($scripts) {
+    if (! is_admin() && isset($scripts->registered['jquery'])) {
+        $scripts->registered['jquery']->deps = array_diff($scripts->registered['jquery']->deps, array('jquery-migrate'));
+    }
+});
+
 // Divi's Google Fonts request uses display=swap, which re-lays out text when the font lands (CLS).
 add_filter('style_loader_src', function ($src) {
     return false !== strpos($src, 'fonts.googleapis.com') ? str_replace('display=swap', 'display=optional', $src) : $src;
