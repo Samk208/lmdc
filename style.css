@@ -3643,6 +3643,12 @@ body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark {
     background: #F8FDF8 !important;
     background-image: none !important;
 }
+/* The card kept its dark overlay from the photo version; on the light band it made the
+   dark-green text fail contrast (3.7:1). */
+body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark .et_pb_row_11 {
+    background: var(--lnmc-green-alpha);
+    box-shadow: none;
+}
 body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark,
 body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark p,
 body.home #page-container #main-content .et_pb_section_5.lnmc-on-dark li,
@@ -3781,3 +3787,21 @@ body #page-container #main-content .et-l--footer .et_pb_column_4_tb_footer .et_p
     color: rgba(0, 0, 0, 0.4) !important;
 }
 
+
+/* Header contact line: Divi's #57CC99 is 1.9:1 on the page background. */
+body #page-container .et_pb_section_0_tb_header .et_pb_text_0_tb_header a {
+    color: var(--lnmc-green) !important;
+}
+
+/* Screen-reader-only text (link context added in functions.php). */
+.lnmc-sr {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}

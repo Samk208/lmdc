@@ -46,16 +46,7 @@ require_once get_stylesheet_directory() . '/includes/class-lnmc-entity-schema.ph
 
 function divichild_enqueue_scripts()
 {
-    // Brand fonts: Amiri (headings) + Source Sans 3 (body) per client brief.
-    // Playfair Display and Source Sans Pro already come from Divi's own font
-    // request; Space Grotesk is only a CSS fallback. display=optional: no
-    // late font swap, so no layout shift (CLS) when the font arrives.
-    wp_enqueue_style(
-        'lnmc-fonts',
-        'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=optional',
-        array(),
-        null
-    );
+    // Fonts are self-hosted: see lnmc_print_fonts() below.
     // Divi 4.10+ enqueues the child style.css itself (handle `divi-style`).
 
     wp_enqueue_script('custom-js', get_stylesheet_directory_uri() . '/js/scripts.js', array('jquery'), filemtime(get_stylesheet_directory() . '/js/scripts.js'), true);
@@ -147,9 +138,29 @@ add_action('wp_head', function () {
     }
 }, 1);
 
-add_action('wp_head', function () {
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />' . "\n";
-}, 1);
+// Self-hosted fonts (assets/fonts, latin + latin-ext of every family Divi and style.css ask for).
+// The @font-face rules are inlined so no stylesheet blocks first paint, and the three faces used
+// above the fold are preloaded. display=optional: no late swap, so no layout shift.
+function lnmc_print_fonts()
+{
+    $dir = get_stylesheet_directory_uri() . '/assets/fonts/';
+    foreach (array('source-sans-pro-normal-400-latin', 'source-sans-pro-normal-700-latin', 'cormorant-garamond-normal-300-700-latin') as $f) {
+        echo '<link rel="preload" href="' . esc_url($dir . $f . '.woff2') . '" as="font" type="font/woff2" crossorigin />' . "\n";
+    }
+    $css = file_get_contents(get_stylesheet_directory() . '/assets/css/lnmc-fonts.css');
+    echo '<style id="lnmc-fonts">' . str_replace('url(../fonts/', 'url(' . $dir, $css) . '</style>' . "\n";
+}
+add_action('wp_head', 'lnmc_print_fonts', 1);
+
+// Drop every Google Fonts stylesheet (Divi's builder request included) and its dns-prefetch.
+add_filter('style_loader_tag', function ($tag) {
+    return false !== strpos($tag, 'fonts.googleapis.com') ? '' : $tag;
+});
+add_filter('wp_resource_hints', function ($urls) {
+    return array_filter($urls, function ($u) {
+        return false === strpos(is_array($u) ? ($u['href'] ?? '') : $u, 'fonts.g');
+    });
+});
 
 // Divi prints the module design styles (header/footer layouts included) in the body, after the
 // content. On a slow connection the header paints with default section padding, then shrinks when
@@ -170,11 +181,6 @@ add_action('wp_default_scripts', function ($scripts) {
     }
 });
 
-// Divi's Google Fonts request uses display=swap, which re-lays out text when the font lands (CLS).
-add_filter('style_loader_src', function ($src) {
-    return false !== strpos($src, 'fonts.googleapis.com') ? str_replace('display=swap', 'display=optional', $src) : $src;
-});
-
 /**
  * FIX: Add Skip-to-Content Link for keyboard navigation
  */
@@ -183,18 +189,50 @@ add_action('wp_body_open', function () {
 });
 
 /**
- * FIX: Add aria-label to search button
+ * Accessibility fixes on the final page HTML (Theme Builder header/footer included):
+ * - Divi's search/close icon buttons get a name;
+ * - "Learn More"-style links get the target page title as screen-reader text;
+ * - headings that skip a level (Divi blurbs default to h4, footer to h5) get an aria-level
+ *   one below the previous heading, so the outline is sequential without touching the styling.
  */
-add_filter('et_pb_module_shortcode_output', function ($output, $render_count) {
-    if (strpos($output, 'et_pb_menu__search-button') !== false) {
-        $output = str_replace(
-            'class="et_pb_menu__search-button"',
-            'class="et_pb_menu__search-button" aria-label="Search" title="Search the site"',
-            $output
-        );
+function lnmc_a11y_html_fixes($html)
+{
+    $html = str_replace(
+        array('et_pb_menu__search-button">', 'et_pb_menu__close-search-button">'),
+        array('et_pb_menu__search-button" aria-label="Search">', 'et_pb_menu__close-search-button" aria-label="Close search">'),
+        $html
+    );
+
+    $html = preg_replace_callback('#(<a\b[^>]*\bhref="([^"]*)"[^>]*>)\s*(learn more|read more|click here|more|here)\s*</a>#i', function ($m) {
+        $id    = url_to_postid($m[2]);
+        $title = $id ? get_the_title($id) : '';
+        return $title ? $m[1] . $m[3] . '<span class="lnmc-sr">: ' . esc_html($title) . '</span></a>' : $m[0];
+    }, $html);
+
+    $body = strpos($html, '<body');
+    if (false === $body) {
+        return $html;
     }
-    return $output;
-}, 10, 2);
+    // Siblings with the same tag keep the same remapped level.
+    $prev_tag = 0;
+    $prev     = 0;
+    $tail = preg_replace_callback('#<h([1-6])\b([^>]*)>#i', function ($m) use (&$prev_tag, &$prev) {
+        $tag   = (int) $m[1];
+        $level = $tag === $prev_tag ? $prev : min($tag, $prev + 1);
+        $prev_tag = $tag;
+        $prev     = $level;
+        return $level === $tag || false !== stripos($m[2], 'aria-level') ? $m[0] : '<h' . $m[1] . $m[2] . ' aria-level="' . $level . '">';
+    }, substr($html, $body));
+    return substr($html, 0, $body) . $tail;
+}
+// litespeed_buffer_before runs once per generated page, so the fixed HTML is what gets cached.
+if (defined('LSCWP_V')) {
+    add_filter('litespeed_buffer_before', 'lnmc_a11y_html_fixes', 1);
+} else {
+    add_action('template_redirect', function () {
+        ob_start('lnmc_a11y_html_fixes');
+    });
+}
 
 /**
  * FIX: Ensure main landmark is present
